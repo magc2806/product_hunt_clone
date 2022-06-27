@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -22,3 +23,7 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+=======
+# product_hunt_clone
+This a rails project in which main goal is to build a product hunt clone web application. 
+>>>>>>> 86fb33137287659e8db3b69f532e3eede5e5781e
