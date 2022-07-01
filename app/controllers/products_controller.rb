@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:new]
   before_action :find_product, only: [:show, :edit, :update, :destroy]
   def index
-    @products = Product.paginates params[:page]
+    @products = Product.visibles.paginate(page: params[:page])
   end
 
   def show
@@ -48,7 +48,7 @@ class ProductsController < ApplicationController
 
   def search
     @name = params[:search_name]
-    @products = Product.search_by_name(@name, params[:page])
+    @products = Product.search_by_name(@name).paginate(page: params[:page])
     
   end
 

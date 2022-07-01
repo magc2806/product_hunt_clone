@@ -15,15 +15,18 @@ class Product < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  validates :name, presence: true
-  validates :description, presence: true
+  
+  has_many :product_categories
+  has_many :categories, through: :product_categories
 
   has_one_attached :image, :dependent => :destroy
 
+  validates :name, presence: true
+  validates :description, presence: true
+
   self.per_page = 30
-  scope :visibles, ->{where(visible: true)}
-  scope :paginates, ->(page=1){order(created_at: :desc).distinct.paginate(page: page)}
-  scope :search_by_name, ->(name='', page=1){visibles.where("name LIKE ?",  "%#{name}%").paginates(page)}
+  scope :visibles, ->{where(visible: true).order(created_at: :desc)}
+  scope :search_by_name, ->(name=''){visibles.where("name LIKE ?",  "%#{name}%")}
 
 
 
