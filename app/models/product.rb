@@ -17,4 +17,14 @@ class Product < ApplicationRecord
 
   validates :name, presence: true
   validates :description, presence: true
+
+  has_one_attached :image, :dependent => :destroy
+
+  self.per_page = 30
+  scope :visibles, ->{where(visible: true)}
+  scope :paginates, ->(page=1){order(created_at: :desc).distinct.paginate(page: page)}
+  scope :search_by_name, ->(name='', page=1){visibles.where("name LIKE ?",  "%#{name}%").paginates(page)}
+
+
+
 end
