@@ -1,7 +1,12 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:new,:edit]
+  before_action :set_product, only: [:new]
+  before_action :find_product, only: [:show, :edit, :update, :destroy]
   def index
     @products = Product.all
+  end
+
+  def show
+    
   end
 
   def new
@@ -13,10 +18,32 @@ class ProductsController < ApplicationController
     @product= Product.create(product_params)
 
     if @product.persisted?
-      redirect_to products_path, notice: "Producto creado"
+      redirect_to product_path(@product), notice: "Producto creado"
     else
       render :new, status: :unprocessable_entity, alert: "No se pudo crear el producto"
     end
+  end
+
+  def edit
+    
+    
+  end
+
+  def update
+    if @product.update product_params
+      redirect_to product_path(@product), notice: "El producto se actualizó"
+    else
+      render :edit, status: :unprocessable_entity, alert: "No se pudo actualizar el producto"
+    end
+  end
+
+  def destroy
+    if @product.destroy
+      redirect_to products_path, status: :see_other, notice: "Producto eliminado" 
+    else
+      redirect_to product_path(@product),status: :unprocessable_entity, alert: "No se pudo eliminar el producto"
+    end
+
   end
 
   private
@@ -27,6 +54,11 @@ class ProductsController < ApplicationController
   end
   def set_product
     @product = Product.new
+    
+  end
+
+  def find_product
+    @product = Product.find params[:id]
     
   end
 end
