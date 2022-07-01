@@ -46,6 +46,12 @@ class ProductsController < ApplicationController
 
   end
 
+  def search
+    @name = params[:search_name]
+    @products = Product.where(visible: true).where("name LIKE ?",  "%#{@name}%")
+
+  end
+
   private
 
   def product_params
@@ -58,7 +64,7 @@ class ProductsController < ApplicationController
   end
 
   def find_product
-    @product = Product.find params[:id]
+    @product = Product.friendly.find(params[:id])
     
   end
 end
