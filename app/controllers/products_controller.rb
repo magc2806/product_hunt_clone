@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:new]
   before_action :find_product, only: [:show, :edit, :update, :destroy]
   def index
-    @products = Product.visibles.paginate(page: params[:page])
+    @products = Product.preload(:categories).visibles.paginate(page: params[:page])
   end
 
   def show
@@ -48,7 +48,7 @@ class ProductsController < ApplicationController
 
   def search
     @name = params[:search_name]
-    @products = Product.search_by_name(@name).paginate(page: params[:page])
+    @products = Product.preload(:categories).search_by_name(@name).paginate(page: params[:page])
     
   end
 
@@ -64,7 +64,7 @@ class ProductsController < ApplicationController
   end
 
   def find_product
-    @product = Product.friendly.find(params[:id])
+    @product = Product.preload(:categories).friendly.find(params[:id])
     
   end
 end
